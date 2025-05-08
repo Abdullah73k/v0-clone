@@ -1,21 +1,26 @@
-import { generateText } from "ai";
-import { anthropic, AnthropicProviderOptions } from "@ai-sdk/anthropic";
+import { streamText } from "ai";
+import { anthropic } from "@ai-sdk/anthropic";
+import { systemPrompt } from "./system-prompt.js";
 
-export const claudeChat = async (prompt: string) => {
-	const { text } = await generateText({
-		model: anthropic("claude-3-haiku-20240307"),
+export const claudeChatStream = async (userPrompt: string) => {
+	const result = await streamText({
+		model: anthropic("claude-3-7-sonnet-20250219"),
 		messages: [
-			{ role: "system", content: "You are an export React frontend developer" },
-			{ role: "user", content: prompt },
+			{
+				role: "system",
+				content: systemPrompt,
+			},
+			{
+				role: "user",
+				content: userPrompt,
+			},
 		],
-		// providerOptions: {
-		// 	anthropic: {
-		// 		thinking: { type: "enabled", budgetTokens: 1200 },
-		// 	},
-		// },
+		providerOptions: {
+			anthropic: {
+				thinking: { type: "enabled", budgetTokens: 1200 },
+			},
+		},
 	});
 
-	return {
-		text
-	};
+	return result.textStream; // this is the ReadableStream
 };
