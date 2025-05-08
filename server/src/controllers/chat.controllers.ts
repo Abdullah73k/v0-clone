@@ -1,11 +1,13 @@
 import { Request, Response } from "express";
 import { claudeChatStream } from "../config/claude.js";
 
+export let versions = [];
+
 export const postCreateChat = async (req: Request, res: Response) => {
-	const { prompt } = req.body;
+	const { prompt, image } = req.body;
 
 	try {
-		const stream = await claudeChatStream(prompt);
+		const stream = await claudeChatStream(prompt, image);
 
 		res.setHeader("Content-Type", "text/plain; charset=utf-8");
 		res.setHeader("Transfer-Encoding", "chunked");
@@ -21,6 +23,4 @@ export const postCreateChat = async (req: Request, res: Response) => {
 	}
 };
 
-export const getChat = () => {
-	
-}
+export const getChat = () => {};
