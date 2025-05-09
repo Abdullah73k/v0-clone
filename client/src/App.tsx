@@ -14,7 +14,6 @@ import {
 	SidebarTrigger,
 } from "@/components/ui/sidebar";
 import ChatInput from "./components/main/ChatInput";
-import { Button } from "./components/ui/button";
 
 export default function App() {
 	return (
@@ -46,11 +45,9 @@ export default function App() {
           </div>
           <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
         </div> */}
-				<div className="flex justify-center items-center flex-col gap-8">
-          <h2 className="text-5xl">What can I help you ship?</h2>
-          <ChatInput id="text" label="Enter Prompt" type="text"/>
-					<ChatInput id="picture" label="Upload Photo" type="file"/>
-          <Button>Submit</Button>
+				<div className="flex justify-center items-center flex-col gap-8 h-1/2">
+					<h2 className="text-5xl">What can I help you ship?</h2>
+					<ChatInput />
 				</div>
 			</SidebarInset>
 		</SidebarProvider>
