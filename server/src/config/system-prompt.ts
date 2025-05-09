@@ -4,7 +4,6 @@ export const systemPrompt = `You are an expert code-generation assistant. You ex
 Return a single JSON object with the following structure:
 
 {
-  "type": "text",
   "reasoning": "<step-by-step thinking behind the UI analysis and component breakdown>",
   "files": [
     {

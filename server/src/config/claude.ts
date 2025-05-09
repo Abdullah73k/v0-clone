@@ -2,11 +2,13 @@ import { streamText, CoreMessage } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
 import { systemPrompt } from "./system-prompt.js";
 
+export let messages: CoreMessage[];
+
 export const claudeChatStream = async (
 	userPrompt: string,
 	userImage: string
 ) => {
-	const messages: CoreMessage[] = [
+	messages = [
 		{
 			role: "system",
 			content: systemPrompt,
