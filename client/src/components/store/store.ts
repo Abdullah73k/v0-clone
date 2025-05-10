@@ -1,17 +1,9 @@
-import { createSlice, configureStore } from "@reduxjs/toolkit";
-
-const initialChatState = {
-    
-}
-
-const chatSlice = createSlice({
-    name: "chat",
-    initialState: 
-})
+import { configureStore } from "@reduxjs/toolkit";
+import inputSlice from "./input-slice";
+import pageSlice from "./page-slice";
 
 const store = configureStore({
-    reducer: {}
-})
+	reducer: { input: inputSlice.reducer, page: pageSlice.reducer },
+});
 
-
-export default store
+export default store;
