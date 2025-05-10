@@ -1,26 +1,27 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice } from "@reduxjs/toolkit";
 
-type PageViewing = "home" | "recents" | "chat"
+type PageViewing = "home" | "recents" | "chat";
 
 interface ViewState {
-    currentPage: PageViewing,
-    activeChatId?: string
+	currentPage: PageViewing;
+	activeChatId?: string;
 }
 
 const initialState: ViewState = {
-    currentPage: "home",
-    activeChatId: ""
-}
+	currentPage: "home",
+	activeChatId: "",
+};
 
 const pageSlice = createSlice({
-    name: "page",
-    initialState,
-    reducers: {
+	name: "page",
+	initialState,
+	reducers: {
+		setPage(state, action: { payload: PageViewing }) {
+			state.currentPage = action.payload;
+		},
+	},
+});
 
-    }
-})
+export default pageSlice;
 
-
-export default pageSlice
-
-export const pageActions = pageSlice.actions
+export const pageActions = pageSlice.actions;

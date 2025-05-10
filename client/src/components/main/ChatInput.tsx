@@ -1,9 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { Paperclip, Upload } from "lucide-react";
+import { Paperclip } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "../ui/input";
 import { useRef, useState } from "react";
 import RenderImageUpload from "./RenderImageUpload";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
+import { inputActions } from "../store/input-slice";
 
 interface ChatInput {
 	type: string;
@@ -15,13 +17,20 @@ export default function ChatInput() {
 	const imageInputRef = useRef<HTMLInputElement | null>(null);
 	const [file, setFile] = useState<File | null>(null);
 
+	const uploadedImage = useAppSelector((state) => state.input.uploadedImage);
+	const dispatch = useAppDispatch();
+
 	function handleChatInputSubmit() {
 		imageInputRef.current?.click();
 	}
 
 	function handleFileChange() {
 		if (imageInputRef.current?.files) {
-			setFile(imageInputRef.current.files[0]);
+			dispatch(
+				inputActions.setUploadedImage({
+					payload: imageInputRef.current.files[0],
+				})
+			);
 		}
 	}
 
