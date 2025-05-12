@@ -5,22 +5,26 @@ export let versions = [];
 
 export const postCreateChat = async (req: Request, res: Response) => {
 	const { prompt, image } = req.body;
+	res.json({
+		success: true,
+		result: { prompt, image },
+	});
 
-	try {
-		const stream = await claudeChatStream(prompt, image);
+	// try {
+	// 	const stream = await claudeChatStream(prompt, image);
 
-		res.setHeader("Content-Type", "text/plain; charset=utf-8");
-		res.setHeader("Transfer-Encoding", "chunked");
+	// 	res.setHeader("Content-Type", "text/plain; charset=utf-8");
+	// 	res.setHeader("Transfer-Encoding", "chunked");
 
-		for await (const token of stream) {
-			res.write(token);
-		}
+	// 	for await (const token of stream) {
+	// 		res.write(token);
+	// 	}
 
-		res.end();
-	} catch (error) {
-		console.error("Streaming error:", error);
-		res.status(500).send("Error streaming Claude response");
-	}
+	// 	res.end();
+	// } catch (error) {
+	// 	console.error("Streaming error:", error);
+	// 	res.status(500).send("Error streaming Claude response");
+	// }
 };
 
 export const getChat = () => {};
