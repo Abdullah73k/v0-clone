@@ -7,6 +7,8 @@ import {
 } from "@/components/ui/sidebar";
 import { Button } from "../ui/button";
 import NavCollapsible from "./nav-collapsible";
+import { useAppDispatch } from "@/hooks/redux/hooks";
+import { pageActions } from "../store/page-slice";
 
 const info = [
 	{
@@ -24,10 +26,21 @@ const info = [
 ];
 
 export default function NavMain() {
+	const dispatch = useAppDispatch();
+
+	function handleNewChat() {
+		dispatch(pageActions.setPage("home"));
+	}
+
 	return (
 		<>
 			<SidebarGroup className="flex gap-2">
-				<Button className="group-data-[collapsible=icon]:hidden">New Chat</Button>
+				<Button
+					className="group-data-[collapsible=icon]:hidden"
+					onClick={handleNewChat}
+				>
+					New Chat
+				</Button>
 				<SidebarMenu>
 					{info.map((item) => (
 						<SidebarMenuItem key={item.name}>
@@ -40,7 +53,7 @@ export default function NavMain() {
 						</SidebarMenuItem>
 					))}
 				</SidebarMenu>
-                <NavCollapsible />
+				<NavCollapsible />
 			</SidebarGroup>
 		</>
 	);

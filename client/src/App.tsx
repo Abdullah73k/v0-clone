@@ -14,8 +14,31 @@ import {
 	SidebarTrigger,
 } from "@/components/ui/sidebar";
 import ChatInput from "./components/main/ChatInput";
+import { useAppSelector } from "./hooks/redux/hooks";
+import Recents from "./components/recents/Recents";
+import Chat from "./components/chat/Chat";
 
 export default function App() {
+	const activePage = useAppSelector((state) => state.page.currentPage);
+	let pageToRender;
+
+	switch (activePage) {
+		case "home":
+			pageToRender = (
+				<div className="flex justify-center items-center flex-col gap-8 h-1/2">
+					<h2 className="text-5xl">What can I help you ship?</h2>
+					<ChatInput />
+				</div>
+			);
+			break;
+		case "recents":
+			pageToRender = <Recents />;
+			break;
+		case "chat":
+			pageToRender = <Chat />;
+			break;
+	}
+
 	return (
 		<SidebarProvider>
 			<AppSidebar />
@@ -37,18 +60,8 @@ export default function App() {
             </Breadcrumb> */}
 					</div>
 				</header>
-				{/* <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div className="aspect-video rounded-xl bg-muted/50" />
-            <div className="aspect-video rounded-xl bg-muted/50" />
-            <div className="aspect-video rounded-xl bg-muted/50" />
-          </div>
-          <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
-        </div> */}
-				<div className="flex justify-center items-center flex-col gap-8 h-1/2">
-					<h2 className="text-5xl">What can I help you ship?</h2>
-					<ChatInput />
-				</div>
+
+				{pageToRender}
 			</SidebarInset>
 		</SidebarProvider>
 	);

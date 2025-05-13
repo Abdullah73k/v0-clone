@@ -39,11 +39,13 @@ export default function ChatInput() {
 	}
 
 	return (
-		<form action={promptFormAction}>
-			<div className="border rounded-lg px-4 py-2 flex items-center gap-2 w-4xl shadow-sm flex-col">
-				<Textarea
-					placeholder="Ask v0 to build..."
-					className="
+		<form
+			action={promptFormAction}
+			className="border rounded-lg px-4 py-2 flex items-center gap-2 w-4xl shadow-sm flex-col"
+		>
+			<Textarea
+				placeholder="Ask v0 to build..."
+				className="
 				border-none 
 				outline-none 
 				focus:outline-none 
@@ -57,36 +59,36 @@ export default function ChatInput() {
         		bg-transparent
         		resize-none
 				"
-					name="prompt"
+				name="prompt"
+			/>
+
+			<div className="flex gap-2 w-full items-center justify-end">
+				<Input
+					type="file"
+					className="hidden"
+					ref={imageInputRef}
+					onChange={handleFileChange}
+					name="file"
 				/>
-
-				<div className="flex gap-2 w-full items-center justify-end">
-					<Input
-						type="file"
-						className="hidden"
-						ref={imageInputRef}
-						onChange={handleFileChange}
-						name="file"
-					/>
-					<Button
-						variant="ghost"
-						size="icon"
-						className="p-2 cursor-pointer"
-						onClick={handleChatInputSubmit}
-					>
-						<Paperclip className="w-5 h-5 text-muted-foreground " />
-					</Button>
-					<Button className="cursor-pointer" type="submit" disabled={isPending}>
-						Create
-					</Button>
-				</div>
-				<div className="h-px w-full bg-muted my-2"></div>
-				{file && (
-					<RenderImageUpload file={file} removeFile={handleRemovingFile} />
-				)}
-
-				{state.errors && <p>{state.errors[0]}</p>}
+				<Button
+					variant="ghost"
+					size="icon"
+					className="p-2 cursor-pointer"
+					onClick={handleChatInputSubmit}
+					type="button"
+				>
+					<Paperclip className="w-5 h-5 text-muted-foreground " />
+				</Button>
+				<Button className="cursor-pointer" type="submit" disabled={isPending}>
+					Create
+				</Button>
 			</div>
+			<div className="h-px w-full bg-muted my-2"></div>
+			{file && (
+				<RenderImageUpload file={file} removeFile={handleRemovingFile} />
+			)}
+
+			{state.errors && <p>{state.errors[0]}</p>}
 		</form>
 	);
 }
