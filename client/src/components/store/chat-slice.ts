@@ -16,7 +16,7 @@ const chatSlice = createSlice({
 	name: "chat",
 	initialState,
 	reducers: {
-		appendStreamingChunk(state, action: { payload: string }) {
+		setMessageResponse(state, action: { payload: string }) {
 			state.messages.push(action.payload)
 		},
 		appendUserPrompt(state, action: { payload: string }) {
