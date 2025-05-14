@@ -1,30 +1,32 @@
 import { Request, Response } from "express";
 import { claudeChatStream } from "../config/claude.js";
+import { convertImageToBase64 } from "../utils/convertToBase64.js";
 
 export let versions = [];
 
 type CreateChatReqBody = {
-	prompt: string,
-	image: string
-}
+	prompt: string;
+};
 
-export const postCreateChat = async (req: Request<{}, {}, CreateChatReqBody>, res: Response) => {
-	const { prompt, image } = req.body;
+export const postCreateChat = async (
+	req: Request<{}, {}, CreateChatReqBody>,
+	res: Response
+) => {
+	const { prompt } = req.body;
+	const image = req.file;
+	const base64Image = image?.path ? await convertImageToBase64(image.path) : null;
+	console.log(base64Image)
+
+	if (!image) {
+		res.status(400).send("Image file is required");
+		return;
+	}
+	console.log(image);
 
 	try {
-		const stream = await claudeChatStream(prompt, image);
+		const result = await claudeChatStream(prompt, base64Image || ""); // Assuming `image.path` contains the file path as a string
 
-		res.setHeader("Content-Type", "text/plain; charset=utf-8");
-		res.setHeader("Transfer-Encoding", "chunked");
-
-		const reader = stream.getReader();
-		const encoder = new TextEncoder();
-
-		for await (const chunk of stream) {
-			res.write(chunk); // Or however you stream Claude's output
-		  }
-		  res.end();
-		  
+		res.json({ result });
 	} catch (error) {
 		console.error("Streaming error:", error);
 		res.status(500).send("Error streaming Claude response");

@@ -1,4 +1,4 @@
-import { streamText, CoreMessage } from "ai";
+import { generateText, CoreMessage } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
 import { systemPrompt } from "./system-prompt.js";
 
@@ -18,7 +18,7 @@ export const claudeChatStream = async (
 			content: [
 				{
 					type: "image",
-					image: userImage
+					image: userImage,
 				},
 				{
 					type: "text",
@@ -28,20 +28,17 @@ export const claudeChatStream = async (
 		},
 	];
 
-	const result = streamText({
-        model: anthropic("claude-3-7-sonnet-20250219"),
-        messages: messages,
-        providerOptions: {
-            anthropic: {
-                thinking: { type: "enabled", budgetTokens: 1200 },
-                cacheControl: { type: "ephemeral" },
-            },
-        },
-        temperature: 0.4,
-        onFinish: ({ providerMetadata }) => {
-            console.log(providerMetadata?.anthropic);
-        },
-    });
+	const result = generateText({
+		model: anthropic("claude-3-7-sonnet-20250219"),
+		messages: messages,
+		providerOptions: {
+			anthropic: {
+				thinking: { type: "enabled", budgetTokens: 1200 },
+				cacheControl: { type: "ephemeral" },
+			},
+		},
+		temperature: 0.4,
+	});
 
-	return result.textStream; // this is the ReadableStream
+	return result; // this is the ReadableStream
 };

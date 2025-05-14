@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { connectDB } from "./config/mongo.js";
 import chatRoutes from "./routes/chat.routes.js";
+import multer from "multer";
 
 dotenv.config();
 connectDB();
@@ -10,6 +11,7 @@ connectDB();
 const app = express();
 const PORT = process.env.PORT;
 
+app.use(multer({ dest: "images" }).single("file"));
 app.use(express.json());
 app.use(cors({ origin: process.env.ORIGIN }));
 
