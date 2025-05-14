@@ -1,7 +1,8 @@
 import { useActionState } from "react";
-import axios from "axios";
 import { useAppDispatch } from "./redux/hooks";
 import { pageActions } from "@/components/store/page-slice";
+import { chatActions } from "@/components/store/chat-slice"; // make sure you have appendStreamingChunk
+import { convertBase64 } from "@/lib/convert-image";
 
 type State = { errors: string[] } | { errors: null };
 const apiURL = "http://localhost:3000/api/chat/";
@@ -19,42 +20,58 @@ export function useChatInput() {
 		const promptText = typeof prompt === "string" ? prompt.trim() : "";
 		const hasFile = file instanceof File && file.size > 0;
 
-		const data = {
-			file,
-			promptText,
-		};
+		const base64Image = file instanceof File ? await convertBase64(file) : null;
 
 		const errors: string[] = [];
-
 		if (promptText.length === 0 && !hasFile) {
 			errors.push("You must add a reference image or add a prompt");
 		}
-
-		if (errors.length > 0) {
-			return { errors };
-		}
+		if (errors.length > 0) return { errors };
 
 		try {
 			dispatch(pageActions.setPage("chat"));
-			const response = await axios.post(apiURL, data);
 
-			if (!response.data.success) {
-				return { errors: ["Invalid response from server"] };
+			const response = await fetch(apiURL, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ promptText, base64Image }), // Add file later if using base64
+			});
+
+			if (!response.ok) {
+				const errorText = await response.text();
+				console.error("Server error:", errorText);
+				return { errors: [errorText || "Failed to fetch from server"] };
 			}
-			console.log(response.data.result);
+
+			if (!response.body) {
+				return { errors: ["No response body received"] };
+			}
+
+			const reader = response.body.getReader();
+			const decoder = new TextDecoder();
+			let fullText = "";
+
+			while (true) {
+				const { value, done } = await reader.read();
+				if (done) break;
+
+				const chunk = decoder.decode(value, { stream: true });
+				fullText += chunk;
+
+				// Send the streamed text to Redux (or local state)
+				dispatch(chatActions.appendStreamingChunk(chunk));
+			}
+
+			console.log(fullText);
+
 			return { errors: null };
 		} catch (error: unknown) {
-			if (axios.isAxiosError(error)) {
-				console.log("Backend error: ", error.response?.data);
-				return {
-					errors: [error.response?.data],
-				};
-			} else {
-				console.log("Unknown error: ", error);
-				return {
-					errors: ["Unexpected error"],
-				};
-			}
+			console.error("Unknown fetch error:", error);
+			return {
+				errors: [typeof error === "string" ? error : "Unexpected error"],
+			};
 		}
 	}
 

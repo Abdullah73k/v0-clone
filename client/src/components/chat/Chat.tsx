@@ -1,12 +1,7 @@
+import { useAppSelector } from "@/hooks/redux/hooks";
+
 export default function Chat() {
-    return <div>
-        <section>
-            <h2>Reasoning</h2>
-            <p>text</p>
-        </section>
-        <section>
-            <h2>Code</h2>
-            <p>text</p>
-        </section>
-    </div>
+	const messages = useAppSelector((state) => state.chat.messages);
+
+	return messages.map((m, i) => <p key={i}>{m}</p>);
 }
