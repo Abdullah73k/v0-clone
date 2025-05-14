@@ -18,7 +18,7 @@ export const claudeChatStream = async (
 			content: [
 				{
 					type: "image",
-					image: userImage,
+					image: userImage
 				},
 				{
 					type: "text",

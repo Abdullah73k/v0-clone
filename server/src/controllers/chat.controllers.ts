@@ -3,28 +3,34 @@ import { claudeChatStream } from "../config/claude.js";
 
 export let versions = [];
 
-export const postCreateChat = async (req: Request, res: Response) => {
+type CreateChatReqBody = {
+	prompt: string,
+	image: string
+}
+
+export const postCreateChat = async (req: Request<{}, {}, CreateChatReqBody>, res: Response) => {
 	const { prompt, image } = req.body;
-	res.json({
-		success: true,
-		result: { prompt, image },
-	});
 
-	// try {
-	// 	const stream = await claudeChatStream(prompt, image);
+	try {
+		const stream = await claudeChatStream(prompt, image);
 
-	// 	res.setHeader("Content-Type", "text/plain; charset=utf-8");
-	// 	res.setHeader("Transfer-Encoding", "chunked");
+		res.setHeader("Content-Type", "text/plain; charset=utf-8");
+		res.setHeader("Transfer-Encoding", "chunked");
 
-	// 	for await (const token of stream) {
-	// 		res.write(token);
-	// 	}
+		const reader = stream.getReader();
+		const encoder = new TextEncoder();
 
-	// 	res.end();
-	// } catch (error) {
-	// 	console.error("Streaming error:", error);
-	// 	res.status(500).send("Error streaming Claude response");
-	// }
+		for await (const chunk of stream) {
+			res.write(chunk); // Or however you stream Claude's output
+		  }
+		  res.end();
+		  
+	} catch (error) {
+		console.error("Streaming error:", error);
+		res.status(500).send("Error streaming Claude response");
+	}
 };
 
 export const getChat = () => {};
+
+export const postChatToExistingChat = () => {};
