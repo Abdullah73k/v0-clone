@@ -1,6 +1,8 @@
-import { generateText, CoreMessage } from "ai";
+import { generateText, CoreMessage, streamObject, generateObject } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
+import { openai } from "@ai-sdk/openai";
 import { systemPrompt } from "./system-prompt.js";
+import { z } from "zod";
 
 export let messages: CoreMessage[];
 
@@ -18,7 +20,7 @@ export const claudeChatStream = async (
 			content: [
 				{
 					type: "image",
-					image: userImage,
+					image: userImage
 				},
 				{
 					type: "text",
@@ -28,17 +30,21 @@ export const claudeChatStream = async (
 		},
 	];
 
-	const result = generateText({
-		model: anthropic("claude-3-7-sonnet-20250219"),
+	const { object } = await generateObject({
+		model: openai("gpt-4.1-mini"),
+		schema: z.object({
+			text: z.string(),
+			files: z.array(
+				z.object({
+					path: z.string(),
+					content: z.record(z.string(), z.string()),
+				})
+			),
+			version: z.string().optional(),
+		}),
 		messages: messages,
-		providerOptions: {
-			anthropic: {
-				thinking: { type: "enabled", budgetTokens: 1200 },
-				cacheControl: { type: "ephemeral" },
-			},
-		},
 		temperature: 0.4,
 	});
 
-	return result; // this is the ReadableStream
+	return object;
 };

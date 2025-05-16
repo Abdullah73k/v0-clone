@@ -1,35 +1,32 @@
 import { Request, Response } from "express";
 import { claudeChatStream } from "../config/claude.js";
-import { convertImageToBase64 } from "../utils/convertToBase64.js";
 
 export let versions = [];
 
 type CreateChatReqBody = {
 	prompt: string;
+	image: string;
 };
 
 export const postCreateChat = async (
 	req: Request<{}, {}, CreateChatReqBody>,
 	res: Response
 ) => {
-	const { prompt } = req.body;
-	const image = req.file;
-	const base64Image = image?.path ? await convertImageToBase64(image.path) : null;
-	console.log(base64Image)
+	const { prompt, image } = req.body;
 
-	if (!image) {
+	if (typeof image !== "string") {
 		res.status(400).send("Image file is required");
+		console.log(typeof image);
 		return;
 	}
-	console.log(image);
 
 	try {
-		const result = await claudeChatStream(prompt, base64Image || ""); // Assuming `image.path` contains the file path as a string
+		const result = await claudeChatStream(prompt, image);
 
-		res.json({ result });
+		res.status(200).json({ result });
 	} catch (error) {
 		console.error("Streaming error:", error);
-		res.status(500).send("Error streaming Claude response");
+		res.status(500).json("Internal server error, could not get object");
 	}
 };
 

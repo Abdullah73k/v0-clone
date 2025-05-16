@@ -11,7 +11,7 @@ connectDB();
 const app = express();
 const PORT = process.env.PORT;
 
-app.use(multer({ dest: "images" }).single("file"));
+// app.use(multer({ dest: "images" }).single("file"));
 app.use(express.json());
 app.use(cors({ origin: process.env.ORIGIN }));
 
