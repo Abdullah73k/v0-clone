@@ -2,6 +2,8 @@ import { useActionState } from "react";
 import { useAppDispatch } from "./redux/hooks";
 import { pageActions } from "@/components/store/page-slice";
 import { chatActions } from "@/components/store/chat-slice";
+import axios from "axios";
+import { convertFileToBase64 } from "@/lib/convert-image";
 
 type State = { errors: string[] } | { errors: null };
 const apiURL = "http://localhost:3000/api/chat/";
@@ -25,40 +27,39 @@ export function useChatInput() {
 		}
 		if (errors.length > 0) return { errors };
 
-		try {
-			dispatch(pageActions.setPage("chat"));
+		const base64Image =
+			file instanceof File ? await convertFileToBase64(file) : "";
 
-			// ✅ Create a new FormData to send to the backend
+		try {
 			const formDataToSend = new FormData();
 			formDataToSend.append("prompt", promptText);
-			if (hasFile) formDataToSend.append("file", file);
+			if (hasFile && base64Image) formDataToSend.append("image", base64Image);
 
-			// ✅ Send the FormData with no manual Content-Type
-			const response = await fetch(apiURL, {
-				method: "POST",
-				body: formDataToSend,
+			const response = await axios.post(apiURL, formDataToSend, {
+				headers: {
+					"Content-Type": "application/json",
+				},
 			});
-			const data = await response.json();
 
-			if (!response.ok) {
-				const errorText = await response.text();
-				console.error("Server error:", errorText);
-				return { errors: [errorText || "Failed to fetch from server"] };
-			}
-
-			if (!response.body) {
-				return { errors: ["No response body received"] };
-			}
-
-			dispatch(chatActions.setMessageResponse(data));
-
-			return { errors: null };
+			const object = response.data;
+			console.log(object);
+			
+			dispatch(pageActions.setPage("chat"));
+			dispatch(chatActions.setMessageResponse(object));
 		} catch (error: unknown) {
-			console.error("Unknown fetch error:", error);
-			return {
-				errors: [typeof error === "string" ? error : "Unexpected error"],
-			};
+			if (axios.isAxiosError(error)) {
+				console.error(
+					"Backend error, could not get LLM response:",
+					error.response?.data
+				);
+				return { errors: [error.response?.data] };
+			} else {
+				console.error("Unexpected error:", error);
+				return { errors: ["Unexpected error occurred"] };
+			}
 		}
+
+		return { errors: null };
 	}
 
 	const [state, promptFormAction, isPending] = useActionState(

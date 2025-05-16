@@ -19,9 +19,6 @@ const chatSlice = createSlice({
 		setMessageResponse(state, action: { payload: string }) {
 			state.messages.push(action.payload)
 		},
-		appendUserPrompt(state, action: { payload: string }) {
-
-		}
 	},
 });
 
