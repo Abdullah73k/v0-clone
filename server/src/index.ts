@@ -12,7 +12,7 @@ const app = express();
 const PORT = process.env.PORT;
 
 // app.use(multer({ dest: "images" }).single("file"));
-app.use(express.json());
+app.use(express.json({limit: "10mb"}));
 app.use(cors({ origin: process.env.ORIGIN }));
 
 app.use("/api/chat", chatRoutes);

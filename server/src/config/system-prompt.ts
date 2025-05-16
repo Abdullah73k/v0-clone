@@ -5,7 +5,8 @@ Return a single JSON object with the following structure:
 
 {
   "text": "Give the user a explanation of the thought process behind the UI analysis, component breakdown and the generated code.
-  Make sure to keep this concise", 
+  Make sure to keep this concise",
+  "version": "1",
   "files": [
     {
       "path": "components/Hero.tsx",
@@ -19,8 +20,7 @@ Return a single JSON object with the following structure:
         "7": "    </section>",
         "8": "  );",
         "9": "}"
-      },
-      "version": "1"
+      }
     }
   ]
 }
