@@ -1,7 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+type Message = {
+	result: {
+		text: string;
+		version?: string;
+		files: {
+			path: string;
+			content: Record<string, string>;
+		}[];
+	};
+};
+
 const initialState: {
-	messages: string[];
+	messages: Message[];
 	currentPrompt: string;
 	isLoading: boolean;
 	error: string;
@@ -17,10 +28,10 @@ const chatSlice = createSlice({
 	initialState,
 	reducers: {
 		setMessageResponse(state, action: { payload: string }) {
-			state.messages.push(action.payload)
+			state.messages.push(action.payload);
 		},
 	},
 });
 
 export const chatActions = chatSlice.actions;
-export default chatSlice
+export default chatSlice;
