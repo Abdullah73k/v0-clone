@@ -27,7 +27,7 @@ const chatSlice = createSlice({
 	name: "chat",
 	initialState,
 	reducers: {
-		setMessageResponse(state, action: { payload: string }) {
+		setMessageResponse(state, action: { payload: Message }) {
 			state.messages.push(action.payload);
 		},
 	},
