@@ -1,14 +1,22 @@
 import { useAppSelector } from "@/hooks/redux/hooks";
-import { SidebarInset } from "../ui/sidebar";
 import { AppSidebar } from "./app-sidebar";
+import { Card } from "@/components/ui/card";
+import { ScrollArea } from "../ui/scroll-area";
+import CodeFile from "./code-file";
+import { useState } from "react";
 
 export default function Chat() {
+	const [selectedFile, setSelectedFile] = useState(null)
 	const messages = useAppSelector((state) => state.chat.messages);
 
 	// if (!messages.length) return <p>No messages yet.</p>;
 
 	// const { result } = messages[0]; // ✅ Destructure result
 	// const { text, version, files } = result;
+
+	function handleFileSelection(key) {
+		
+	}
 
 	return (
 		// <div>
@@ -31,11 +39,18 @@ export default function Chat() {
 		// 		</div>
 		// 	))} */}
 		// </div>
-		<div className="w-1/5 h-1/2">
-			<AppSidebar />
-			<SidebarInset>
-
-			</SidebarInset>
+		<div className="h-1/1 flex">
+			<div className="h-1/1 w-1/3 flex items-center justify-center">
+				<div className="h-34/36 w-11/12">chat area</div>
+			</div>
+			<div className="h-1/1 w-2/3 flex">
+				<AppSidebar />
+				<Card className="w-4/5 shadow-none rounded-xs">
+					<ScrollArea className="h-1/1 m-2">
+						<CodeFile />
+					</ScrollArea>
+				</Card>
+			</div>
 		</div>
 	);
 }
