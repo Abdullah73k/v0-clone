@@ -1,13 +1,21 @@
-interface CodeFileProps {
-	line: string;
-	code: string;
-}
+import { useAppSelector } from "@/hooks/redux/hooks";
 
-export default function CodeFile({ line, code }: CodeFileProps) {
+
+export default function CodeFile() {
+    const selectedFile = useAppSelector((state) => state.chat.selectedFile)
+
+	if (!selectedFile) return <p>no file</p>;
+	const { content } = selectedFile;
+	const code = Object.entries(content);
+
 	return (
-		<div className="flex gap-6 h-auto">
-			<p>{line}</p>
-			<p>{code}</p>
-		</div>
+		<>
+			{code.map((line) => (
+				<div className="flex gap-6 h-auto" key={line[0]}>
+					<p>{line[0]}</p>
+					<p>{line[1]}</p>
+				</div>
+			))}
+		</>
 	);
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, File } from "lucide-react";
 
 import {
 	Collapsible,
@@ -17,8 +17,24 @@ import {
 	SidebarMenuSubButton,
 	SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
+import { chatActions } from "../store/chat-slice";
 
 export function NavFiles() {
+	const message = useAppSelector((state) => state.chat.messages);
+  const dispatch = useAppDispatch()
+
+	if (!message[0]) return <p>no chat</p>;
+	const { result } = message[0];
+	const { components } = result;
+
+	function handleFileSelection(key: string) {
+		const file = components.filter((component) => component?.name === key);
+    const code = file[0]
+    dispatch(chatActions.setSelectedFile(code))
+
+	}
+
 	return (
 		<SidebarGroup>
 			<SidebarGroupLabel>{`Files`}</SidebarGroupLabel>
@@ -33,14 +49,21 @@ export function NavFiles() {
 						</CollapsibleTrigger>
 						<CollapsibleContent>
 							<SidebarMenuSub>
-                {/* here is where to loop */}
-								<SidebarMenuSubItem>
-									<SidebarMenuSubButton asChild>
-										<a>
-											<span>{`Hello`}</span>
-										</a>
-									</SidebarMenuSubButton>
-								</SidebarMenuSubItem>
+								{/* here is where to loop */}
+								{components?.map((component) => (
+									<SidebarMenuSubItem key={component?.name}>
+										<SidebarMenuSubButton asChild>
+											<a
+												onClick={() =>
+													component && handleFileSelection(component.name)
+												}
+											>
+												<File />
+												<span>{component && component.name}</span>
+											</a>
+										</SidebarMenuSubButton>
+									</SidebarMenuSubItem>
+								))}
 							</SidebarMenuSub>
 						</CollapsibleContent>
 					</SidebarMenuItem>

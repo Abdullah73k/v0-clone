@@ -62,8 +62,8 @@ export default function App() {
 					</div>
 				</header>
 
-				{/* {pageToRender} */}
-				<Chat />
+				{pageToRender}
+				{/* <Chat /> */}
 			</SidebarInset>
 		</SidebarProvider>
 	);
