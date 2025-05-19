@@ -20,7 +20,7 @@ export const claudeChatStream = async (
 			content: [
 				{
 					type: "image",
-					image: userImage
+					image: userImage,
 				},
 				{
 					type: "text",
@@ -34,13 +34,17 @@ export const claudeChatStream = async (
 		model: openai("gpt-4.1-mini"),
 		schema: z.object({
 			text: z.string(),
-			files: z.array(
+			version: z.string().optional(),
+			components: z.array(
 				z.object({
-					path: z.string(),
+					name: z.string(),
 					content: z.record(z.string(), z.string()),
 				})
 			),
-			version: z.string().optional(),
+			main: z.object({
+				name: z.string(),
+				content: z.record(z.string(), z.string()),
+			}),
 		}),
 		messages: messages,
 		temperature: 0.4,

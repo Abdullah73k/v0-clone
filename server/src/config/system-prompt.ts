@@ -9,7 +9,7 @@ Return a single JSON object with the following structure:
 
 {
   "text": "Give the user a explanation of the thought process behind the UI analysis, component breakdown and the generated code. Make sure to keep this concise.",
-  "version": 1,
+  "version": "1",
   "components": [
     {
       "name": "header.tsx",
@@ -62,7 +62,7 @@ Return a single JSON object with the following structure:
 ## Example 1:
 {
   "text": "The UI includes a basic structure with a header, main content, and footer. Each section is semantically divided and uses Tailwind for layout and spacing.",
-  "version": 1,
+  "version": "1",
   "components": [
     {
       "name": "header.tsx",
@@ -115,7 +115,7 @@ Return a single JSON object with the following structure:
 ##Example 2: 
 {
   "text": "This UI has a centered hero section with a heading and a call-to-action button. The structure is simple and clean with proper semantic tags.",
-  "version": 1,
+  "version": "1",
   "components": [
     {
       "name": "hero.tsx",
