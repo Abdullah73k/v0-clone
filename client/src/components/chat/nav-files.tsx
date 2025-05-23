@@ -18,25 +18,28 @@ import {
 	SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
-import { chatActions } from "../store/chat-slice";
+import { chatActions } from "../../store/chat-slice";
 
 export function NavFiles() {
 	const message = useAppSelector((state) => state.chat.messages);
-  const dispatch = useAppDispatch()
+	const dispatch = useAppDispatch();
 
-	if (!message[0]) return <p>no chat</p>;
+	if (!message[0]) return <p>no file</p>;
 	const { result } = message[0];
-	const { components } = result;
+	const { components, main } = result;
 
 	function handleFileSelection(key: string) {
 		const file = components.filter((component) => component?.name === key);
-    const code = file[0]
-    dispatch(chatActions.setSelectedFile(code))
+		const code = file[0];
+		dispatch(chatActions.setSelectedFile(code));
+	}
 
+	function handleMainFileSelection() {
+		dispatch(chatActions.setSelectedFile(main));
 	}
 
 	return (
-		<SidebarGroup>
+		<SidebarGroup className="p-2 m-1">
 			<SidebarGroupLabel>{`Files`}</SidebarGroupLabel>
 			<SidebarMenu>
 				<Collapsible asChild defaultOpen={true} className="group/collapsible">
@@ -68,6 +71,13 @@ export function NavFiles() {
 						</CollapsibleContent>
 					</SidebarMenuItem>
 				</Collapsible>
+				<SidebarMenuItem>
+					<SidebarMenuButton asChild>
+						<a onClick={handleMainFileSelection}>
+							<span>{main?.name}</span>
+						</a>
+					</SidebarMenuButton>
+				</SidebarMenuItem>
 			</SidebarMenu>
 		</SidebarGroup>
 	);

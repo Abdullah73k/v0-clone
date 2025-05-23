@@ -15,7 +15,7 @@ export default function RenderImageUpload({
 			<div className="w-1/6 h-24 cursor-pointer">
 				<Button
 					variant="outline"
-					className="h-24 w-24 flex flex-col justify-center"
+					className="h-24 w-24 flex flex-col justify-center cursor-pointer"
 					onClick={removeFile}
 				>
 					<div className="text-[48px]">

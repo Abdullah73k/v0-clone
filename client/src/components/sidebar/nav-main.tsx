@@ -7,8 +7,8 @@ import {
 } from "@/components/ui/sidebar";
 import { Button } from "../ui/button";
 import NavCollapsible from "./nav-collapsible";
-import { useAppDispatch } from "@/hooks/redux/hooks";
-import { pageActions } from "../store/page-slice";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
+import { pageActions } from "../../store/page-slice";
 
 const info = [
 	{
@@ -26,9 +26,12 @@ const info = [
 ];
 
 export default function NavMain() {
+	const currentPage = useAppSelector((state) => state.page.currentPage);
 	const dispatch = useAppDispatch();
 
 	function handleNewChat() {
+		if (currentPage === "home") return;
+
 		dispatch(pageActions.setPage("home"));
 	}
 
@@ -36,7 +39,7 @@ export default function NavMain() {
 		<>
 			<SidebarGroup className="flex gap-2">
 				<Button
-					className="group-data-[collapsible=icon]:hidden"
+					className="group-data-[collapsible=icon]:hidden cursor-pointer"
 					onClick={handleNewChat}
 				>
 					New Chat

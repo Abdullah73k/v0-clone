@@ -41,7 +41,7 @@ export default function ChatInput() {
 	return (
 		<form
 			action={promptFormAction}
-			className="border rounded-lg px-4 py-2 flex items-center gap-2 w-4xl shadow-sm flex-col"
+			className="border px-4 py-2 flex items-center gap-2 shadow-sm flex-col w-5/6"
 		>
 			<Textarea
 				placeholder="Ask v0 to build..."

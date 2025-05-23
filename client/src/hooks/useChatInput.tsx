@@ -1,7 +1,7 @@
 import { useActionState } from "react";
 import { useAppDispatch } from "./redux/hooks";
-import { pageActions } from "@/components/store/page-slice";
-import { chatActions } from "@/components/store/chat-slice";
+import { pageActions } from "@/store/page-slice";
+import { chatActions } from "@/store/chat-slice";
 import axios from "axios";
 import { convertFileToBase64 } from "@/lib/convert-image";
 

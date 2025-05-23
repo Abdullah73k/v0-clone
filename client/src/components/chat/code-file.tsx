@@ -11,7 +11,7 @@ export default function CodeFile() {
 	return (
 		<>
 			{code.map((line) => (
-				<div className="flex gap-6 h-auto" key={line[0]}>
+				<div className="flex gap-6 h-auto " key={line[0]}>
 					<p>{line[0]}</p>
 					<p>{line[1]}</p>
 				</div>
