@@ -37,7 +37,7 @@ Return a single JSON object with the following structure:
     }
   ],
   "main": {
-    "name": "app.tsx",
+    "name": "App.tsx",
     "content": {
       "1": "import React from 'react';",
       "2": "import Header from './header';",
@@ -92,7 +92,7 @@ Return a single JSON object with the following structure:
     }
   ],
   "main": {
-    "name": "app.tsx",
+    "name": "App.tsx",
     "content": {
       "1": "import React from 'react';",
       "2": "import Header from './header';",
@@ -134,7 +134,7 @@ Return a single JSON object with the following structure:
     }
   ],
   "main": {
-    "name": "app.tsx",
+    "name": "App.tsx",
     "content": {
       "1": "import React from 'react';",
       "2": "import Hero from './hero';",
@@ -189,6 +189,7 @@ When analyzing the uploaded image:
 <notes>
 - You may include placeholder data or text if the image lacks explicit content.
 - Always return the final result as a **valid, parsable JSON object** with no extra text.
+- The response should ALWAYS lie the <response_format>
 </notes>
 `;
 

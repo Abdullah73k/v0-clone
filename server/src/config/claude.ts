@@ -34,7 +34,7 @@ export const claudeChatStream = async (
 		model: openai("gpt-4.1-mini"),
 		schema: z.object({
 			text: z.string(),
-			version: z.string().optional(),
+			version: z.string(),
 			components: z.array(
 				z.object({
 					name: z.string(),

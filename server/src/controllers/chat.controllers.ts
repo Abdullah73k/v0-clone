@@ -24,6 +24,8 @@ export const postCreateChat = async (
 		const result = await claudeChatStream(prompt, image);
 
 		res.status(200).json({ result });
+
+		
 	} catch (error) {
 		console.error("Streaming error:", error);
 		res.status(500).json("Internal server error, could not get object");
