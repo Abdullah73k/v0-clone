@@ -43,7 +43,7 @@ export function useChatInput() {
 
 			const object = response.data;
 			console.log(object);
-			
+
 			dispatch(pageActions.setPage("chat"));
 			dispatch(chatActions.setMessageResponse(object));
 		} catch (error: unknown) {
