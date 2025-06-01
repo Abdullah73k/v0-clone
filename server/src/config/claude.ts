@@ -31,7 +31,8 @@ export const claudeChatStream = async (
 	];
 
 	const { object } = await generateObject({
-		model: openai("gpt-4.1-mini"),
+		model: anthropic("claude-3-7-sonnet-20250219"),
+		messages: messages,
 		schema: z.object({
 			text: z.string(),
 			version: z.string(),
@@ -46,8 +47,7 @@ export const claudeChatStream = async (
 				content: z.record(z.string(), z.string()),
 			}),
 		}),
-		messages: messages,
-		temperature: 0.4,
+		temperature: 0.3,
 	});
 
 	return object;

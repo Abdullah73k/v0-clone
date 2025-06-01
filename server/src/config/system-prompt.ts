@@ -190,6 +190,7 @@ When analyzing the uploaded image:
 - You may include placeholder data or text if the image lacks explicit content.
 - Always return the final result as a **valid, parsable JSON object** with no extra text.
 - The response should ALWAYS lie the <response_format>
+- The response should ALWAYS be a JSON array and never a string
 </notes>
 `;
 
