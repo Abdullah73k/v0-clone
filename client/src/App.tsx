@@ -44,7 +44,7 @@ export default function App() {
 					</div>
 				</header>
 				{pageToRender}
-
+				{/* <Chat /> */}
 			</SidebarInset>
 		</SidebarProvider>
 	);

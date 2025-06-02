@@ -4,7 +4,7 @@ import { useAppSelector } from "@/hooks/redux/hooks";
 export default function CodeFile() {
     const selectedFile = useAppSelector((state) => state.chat.selectedFile)
 
-	if (!selectedFile) return <p>no file</p>;
+	if (!selectedFile) return <p>Select a file to view</p>;
 	const { content } = selectedFile;
 	const code = Object.entries(content);
 

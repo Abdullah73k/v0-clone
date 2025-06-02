@@ -24,7 +24,7 @@ export function NavFiles() {
 	const message = useAppSelector((state) => state.chat.messages);
 	const dispatch = useAppDispatch();
 
-	if (!message[0]) return <p>no file</p>;
+	if (!message[0]) return <p>no file selected</p>;
 	const { result } = message[0];
 	const { components, main } = result;
 
